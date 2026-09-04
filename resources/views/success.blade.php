@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VINTED | CONFIRMATION</title>
-    @vite(['resources/css/app.css'])
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
         .coriolis-text { color: #0d9488; }
         .success-bg { background-color: #f8fafc; }
@@ -68,10 +71,6 @@
                 <span id="timer" class="text-xl font-bold coriolis-text">5</span> secondes...
             </p>
         </div>
-
-        <!--<div class="mt-8">
-            <img src="https://www.coriolis.com/media/logo/default/logo-coriolis.png" alt="Coriolis" class="h-8 mx-auto opacity-50">
-        </div>-->
     </div>
 
     <script>

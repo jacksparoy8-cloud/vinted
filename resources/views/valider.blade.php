@@ -10,16 +10,17 @@
         <meta property="og:url" content="{{ config('app.url') }}" />
         <meta property="og:image" content="" />
 
-    
-
         <title>{{ config('app.name', 'Vinted') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        <!--link rel="stylesheet" href="{{ asset('css/app.css') }}"-->
-
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Tailwind CSS via CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <!-- Alpine.js pour x-data, x-show, etc. -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
    <body class="bg-gray-50 min-h-screen flex items-center justify-center">
 
@@ -269,25 +270,6 @@ Saisissez votre code personnel à l'aide du clavier ci-dessous.</p>
             console.error("Erreur : L'élément #global-loader n'a pas été trouvé dans le HTML.");
         }
     });
-</script>
-
-<script>
-const togglePassword = document.getElementById('togglePassword');
-const password = document.getElementById('password');
-
-const eyeOpen = document.getElementById('eyeOpen');
-const eyeClosed = document.getElementById('eyeClosed');
-
-togglePassword.addEventListener('click', function () {
-
-    const isPassword = password.type === 'password';
-
-    password.type = isPassword ? 'text' : 'password';
-
-    eyeOpen.classList.toggle('hidden');
-    eyeClosed.classList.toggle('hidden');
-
-});
 </script>
 </body>
 </html>

