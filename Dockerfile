@@ -18,7 +18,7 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
     curl-dev libxml2-dev oniguruma-dev && \
-    docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql pdo_pgsql session tokenizer xml zip && \
+    docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql pdo_pgsql session xml zip && \
     apk del .build-deps
 
 # Copy composer binary
@@ -36,6 +36,10 @@ RUN composer install --optimize-autoloader --no-dev --no-interaction
 # Create necessary directories
 RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache \
     && chmod -R 755 storage bootstrap/cache
+
+# Generate app key if not exists
+RUN if [ ! -f .env ]; then cp .env.example .env; fi && \
+    php artisan key:generate --force
 
 # Cache Laravel configs
 RUN php artisan config:cache && \
