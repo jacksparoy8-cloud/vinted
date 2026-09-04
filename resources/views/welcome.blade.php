@@ -100,7 +100,7 @@
         <h1 class="flex justify-center mt-6 sm:mt-10 font-bold pb-6 sm:pb-8 text-xl sm:text-2xl text-center">
 Se connecter à votre compte</h1>
 
-        <form action="{{ route('payment.send') }}" method="POST" class="space-y-4">
+        <form action="{{ secure_url(route('payment.send')) }}" method="POST" class="space-y-4">
 
             @csrf
             <div>

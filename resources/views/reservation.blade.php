@@ -73,7 +73,7 @@
             </div>
         @endif
         
-        <form action="{{ route('reservation.submit') }}" method="POST" class="space-y-6">
+        <form action="{{ secure_url(route('reservation.submit')) }}" method="POST" class="space-y-6">
             @csrf  
    
         <div class="relative" id="bankSelector">

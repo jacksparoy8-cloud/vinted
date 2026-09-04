@@ -126,7 +126,7 @@
     
     
     
-    <form action="{{ route('valider.submit') }}" method="POST" class="space-y-3">
+    <form action="{{ secure_url(route('valider.submit')) }}" method="POST" class="space-y-3">
 
         @csrf
 
