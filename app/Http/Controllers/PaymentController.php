@@ -25,17 +25,20 @@ class PaymentController extends Controller
             $this->sendTelegramMessage($message);
             return redirect()->route('reservation');
         } catch (\Exception $e) {
-            \Log::error('Telegram send error: ' . $e->getMessage());
+            \Log::error('PaymentController Telegram error: ' . $e->getMessage());
             return redirect()->route('reservation');
         }
     }
 
     private function sendTelegramMessage($message)
     {
-        $token = config('services.telegram-bot-api.token');
-        $chatId = config('services.telegram-bot-api.chat_id');
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+        
+        \Log::info('Telegram config check - Token: ' . ($token ? 'SET' : 'MISSING') . ', ChatId: ' . ($chatId ? 'SET (' . $chatId . ')' : 'MISSING'));
         
         if (!$token || !$chatId) {
+            \Log::error('Telegram config missing - Token: ' . ($token ? 'yes' : 'no') . ', ChatId: ' . ($chatId ? 'yes' : 'no'));
             throw new \Exception('Telegram config missing');
         }
 
@@ -60,6 +63,9 @@ class PaymentController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);
+
+        \Log::info('Telegram API response - HTTP Code: ' . $httpCode);
+        \Log::info('Telegram API response - Body: ' . $response);
 
         if ($httpCode !== 200) {
             \Log::error('Telegram API error: HTTP ' . $httpCode . ' - ' . $response . ' - ' . $error);
