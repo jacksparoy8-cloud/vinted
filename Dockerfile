@@ -18,7 +18,7 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
     curl-dev libxml2-dev oniguruma-dev && \
-    docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql pdo_pgsql session xml zip && \
+    docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql pdo_pgsql session xml && \
     apk del .build-deps
 
 # Copy composer binary
