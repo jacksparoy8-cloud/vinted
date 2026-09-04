@@ -24,9 +24,8 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        <!--link rel="stylesheet" href="{{ asset('css/app.css') }}"-->
-
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <!-- Tailwind CSS via CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
    <body class="bg-gray-50 min-h-screen flex items-center justify-center">
 
