@@ -40,5 +40,8 @@ RUN php artisan config:cache && \
 # Expose port
 EXPOSE 8000
 
+# Set environment variables
+ENV SERVER_NAME=:8000
+
 # Start FrankenPHP
-CMD ["frankenphp", "run", "--bind=0.0.0.0:8000"]
+CMD ["frankenphp", "run"]
