@@ -40,5 +40,6 @@ RUN php artisan config:cache && \
 # Expose port
 EXPOSE 8000
 
-# Start FrankenPHP - listen on PORT env var or default to 8000
-CMD ["sh", "-c", "frankenphp run --listen=0.0.0.0:${PORT:-8000}"]
+# Start FrankenPHP
+ENV SERVER_NAME=0.0.0.0:8000
+CMD ["frankenphp", "run"]
