@@ -7,19 +7,19 @@ COPY . .
 RUN npm run build
 
 # PHP stage
-FROM dunglas/frankenphp:php8.2.33-alpine
+FROM php:8.2-fpm-alpine
 
 WORKDIR /app
 
 # Install PHP extensions
-RUN install-php-extensions \
-    bcmath ctype curl dom fileinfo filter hash mbstring openssl \
-    pcre pdo pdo_mysql session tokenizer xml zip
+RUN apk add --no-cache \
+    postgresql-dev \
+    && docker-php-ext-install bcmath ctype curl dom fileinfo filter hash mbstring openssl pcre pdo pdo_mysql session tokenizer xml zip
 
 # Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy application files (excluding node_modules)
+# Copy application files
 COPY --chown=www-data:www-data . .
 
 # Copy built assets from node-builder
@@ -38,8 +38,7 @@ RUN php artisan config:cache && \
     php artisan view:cache
 
 # Expose port
-EXPOSE 8000
+EXPOSE 9000
 
-# Start FrankenPHP
-ENV SERVER_NAME=0.0.0.0:8000
-CMD ["frankenphp", "run"]
+# Start PHP-FPM
+CMD ["php-fpm"]
