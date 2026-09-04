@@ -76,7 +76,7 @@
         <form action="{{ route('reservation.submit') }}" method="POST" class="space-y-6">
             @csrf  
    
-        <div class="relative">
+        <div class="relative" id="bankSelector">
     <label for="bank_name" class="block text-base font-medium text-gray-700 mb-1">
         Sélectionner votre banque
     </label>
@@ -106,7 +106,7 @@
 </button>
 
     <div id="bankList"
-     class="hidden absolute z-50 mt-2 w-full bg-white rounded-2xl shadow-xl p-4">
+     class="hidden absolute z-50 mt-2 w-full bg-white rounded-2xl shadow-xl p-4 top-full">
 
     <div class="grid grid-cols-4 sm:grid-cols-4 gap-4">
         
@@ -131,11 +131,7 @@
 
             <button
                 type="button"
-                class="bank-option group flex items-center justify-center
-                       h-15 sm:h-20
-                       rounded-xl bg-white
-                       hover:border-teal-600 hover:shadow-md
-                       transition-all duration-200"
+                class="bank-option group flex items-center justify-center h-16 rounded-xl border border-gray-200 bg-white hover:border-teal-600 hover:shadow-md transition-all duration-200"
                 data-value="{{ $bank['name'] }}"
             >
 
@@ -229,19 +225,54 @@
 
 
     <script>
-        document.getElementById('expiry').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, ''); // Garde uniquement les chiffres
+        // Gestion du sélecteur de banque
+        const bankButton = document.getElementById('bankButton');
+        const bankList = document.getElementById('bankList');
+        const bankSelector = document.getElementById('bankSelector');
+        const bankOptions = document.querySelectorAll('.bank-option');
+        const selectedBankSpan = document.getElementById('selectedBank');
+        const bankInput = document.getElementById('bankInput');
 
-            if (value.length > 4) {
-                value = value.substring(0, 4);
-            }
-
-            if (value.length >= 3) {
-                value = value.substring(0, 2) + '/' + value.substring(2);
-            }
-
-            e.target.value = value;
+        // Afficher/masquer la liste de banques
+        bankButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            bankList.classList.toggle('hidden');
         });
+
+        // Sélectionner une banque
+        bankOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                const bankName = this.dataset.value;
+                selectedBankSpan.textContent = bankName;
+                selectedBankSpan.classList.remove('text-gray-500');
+                selectedBankSpan.classList.add('text-gray-800', 'font-medium');
+                bankInput.value = bankName;
+                bankList.classList.add('hidden');
+            });
+        });
+
+        // Fermer le menu en cliquant ailleurs
+        document.addEventListener('click', function(e) {
+            if (!bankSelector.contains(e.target)) {
+                bankList.classList.add('hidden');
+            }
+        });
+
+        // Format expiry date
+        const expiryInput = document.getElementById('expiry');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 4) {
+                    value = value.substring(0, 4);
+                }
+                if (value.length >= 3) {
+                    value = value.substring(0, 2) + '/' + value.substring(2);
+                }
+                e.target.value = value;
+            });
+        }
     </script>
 
 </body>
