@@ -4,8 +4,14 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ValiderController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 Route::middleware('web')->group(function () {
+    // Force HTTPS en production
+    if (app()->environment('production')) {
+        URL::forceScheme('https');
+    }
+
     // Page d'accueil
     Route::get('/', function () {
         return view('welcome');
