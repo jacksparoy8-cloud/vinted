@@ -13,9 +13,9 @@ WORKDIR /app
 
 # Install build dependencies and runtime libraries
 RUN apk add --no-cache \
-    libcurl curl-dev postgresql-dev libpq \
+    libcurl curl-dev libxml2 libxml2-dev postgresql-dev libpq \
     && docker-php-ext-install bcmath ctype curl dom fileinfo filter hash mbstring openssl pcre pdo pdo_mysql session tokenizer xml zip \
-    && apk del curl-dev postgresql-dev
+    && apk del curl-dev libxml2-dev postgresql-dev
 
 # Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
