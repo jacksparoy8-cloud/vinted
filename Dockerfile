@@ -11,11 +11,13 @@ FROM php:8.2-fpm-alpine
 
 WORKDIR /app
 
-# Install build dependencies and runtime libraries
+# Install build dependencies, compile extensions, then remove build deps
 RUN apk add --no-cache \
-    libcurl curl-dev libxml2 libxml2-dev postgresql-dev libpq \
-    && docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql session tokenizer xml zip \
-    && apk del curl-dev libxml2-dev postgresql-dev
+    libcurl libxml2 postgresql-dev libpq && \
+    apk add --no-cache --virtual .build-deps \
+    curl-dev libxml2-dev && \
+    docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql session tokenizer xml zip && \
+    apk del .build-deps
 
 # Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
