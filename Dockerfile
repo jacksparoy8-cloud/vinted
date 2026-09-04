@@ -13,9 +13,9 @@ WORKDIR /app
 
 # Install build dependencies, compile extensions, then remove build deps
 RUN apk add --no-cache \
-    libcurl libxml2 postgresql-dev libpq && \
+    libcurl libxml2 postgresql-dev libpq oniguruma && \
     apk add --no-cache --virtual .build-deps \
-    curl-dev libxml2-dev && \
+    curl-dev libxml2-dev oniguruma-dev && \
     docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql session tokenizer xml zip && \
     apk del .build-deps
 
