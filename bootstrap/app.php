@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust proxies for Railway
+        $middleware->trustProxies(at: '*');
+        
         // On ajoute ton middleware de sécurité ici
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
     })
