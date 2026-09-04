@@ -14,7 +14,7 @@ WORKDIR /app
 # Install build dependencies and runtime libraries
 RUN apk add --no-cache \
     libcurl curl-dev libxml2 libxml2-dev postgresql-dev libpq \
-    && docker-php-ext-install bcmath ctype curl dom fileinfo filter hash mbstring openssl pcre pdo pdo_mysql session tokenizer xml zip \
+    && docker-php-ext-install bcmath ctype curl dom fileinfo filter mbstring pdo pdo_mysql session tokenizer xml zip \
     && apk del curl-dev libxml2-dev postgresql-dev
 
 # Copy composer binary
