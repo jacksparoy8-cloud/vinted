@@ -41,6 +41,10 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs boots
 RUN if [ ! -f .env ]; then cp .env.example .env; fi && \
     php artisan key:generate --force
 
+# Create SQLite database and run migrations
+RUN touch database/database.sqlite && \
+    php artisan migrate --force || true
+
 # Cache Laravel configs
 RUN php artisan config:cache && \
     php artisan route:cache && \
