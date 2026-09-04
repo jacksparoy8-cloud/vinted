@@ -1,0 +1,14 @@
+node_modules
+.git
+.env
+.env.local
+.env.*.local
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+vendor
+.DS_Store
+npm-debug.log
+.idea
+.vscode
+*.md
