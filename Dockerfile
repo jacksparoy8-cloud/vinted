@@ -3,7 +3,6 @@ FROM node:24-alpine AS node-builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-
 COPY . .
 RUN npm run build
 
@@ -20,8 +19,8 @@ RUN install-php-extensions \
 # Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy application
-COPY . .
+# Copy application files (excluding node_modules)
+COPY --chown=www-data:www-data . .
 
 # Copy built assets from node-builder
 COPY --from=node-builder /app/public/build ./public/build
